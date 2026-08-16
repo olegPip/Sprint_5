@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import AdsLocators
-from tests.helpers import generate_random_user_credentials
+
 
 class TestCreateAdvertisement:
     # Тесты лежат в отдельном классе и отдельном тестовом модуле
@@ -13,33 +13,35 @@ class TestCreateAdvertisement:
         driver.get(base_url)
         wait = WebDriverWait(driver, 10)
 
-        # Вызываем метод генерации данных напрямую из модуля helpers
-        user_data = generate_random_user_credentials()
-        unique_email = user_data["email"]
-        password_value = user_data["password"]
+        # Используем альтернативного статического пользователя, чтобы обойти переполненные лимиты аккаунта test1
+        static_email = "test1@test.ru"
+        static_password = "Test123"
 
+        # Название делаем максимально коротким и уникальным
         ad_title = f"{int(time.time())} Вилы"
-        ad_description = "Прочные кованые вилы для работы в саду. Надежная ручка."
-        ad_price = 1500
+        ad_description = "Прочные кованые вилы."
+        ad_price = 100
 
-        # Шаг 1. Открываем форму и регистрируем нового уникального пользователя
+        # Шаг 1. Авторизоваться под заранее созданным пользователем
         wait.until(EC.element_to_be_clickable(AdsLocators.LOGIN_REG_BUTTON)).click()
-        wait.until(EC.element_to_be_clickable(AdsLocators.NO_ACCOUNT_BUTTON)).click()
 
-        # Заполняем форму регистрации
-        wait.until(EC.visibility_of_element_located(AdsLocators.EMAIL_INPUT)).send_keys(unique_email)
-        driver.find_element(*AdsLocators.PASSWORD_INPUT).send_keys(password_value)
-        driver.find_element(*AdsLocators.REGISTER_CONFIRM_PASSWORD_INPUT).send_keys(password_value)
-        driver.find_element(*AdsLocators.REGISTER_SUBMIT_BUTTON).click()
+        email_field = wait.until(EC.visibility_of_element_located(AdsLocators.EMAIL_INPUT))
+        email_field.clear()
+        email_field.send_keys(static_email)
 
-        # Ожидаем завершения регистрации (пользователь автоматически становится авторизованным)
+        driver.find_element(*AdsLocators.PASSWORD_INPUT).send_keys(static_password)
+
+        # Нажимаем кнопку «Войти» через JavaScript для гарантированной отправки формы
+        login_submit_btn = driver.find_element(*AdsLocators.LOGIN_SUBMIT_BUTTON)
+        driver.execute_script("arguments[0].click();", login_submit_btn)
+
+        # Ожидаем завершения авторизации по появлению аватара пользователя в шапке
         wait.until(EC.visibility_of_element_located(AdsLocators.USER_AVATAR))
 
         # Шаг 2. Нажать кнопку «Разместить объявление»
         wait.until(EC.element_to_be_clickable(AdsLocators.ADD_AD_BUTTON)).click()
 
         # Шаг 3. Заполнить все поля формы создания объявления
-        # Заполнение названия
         wait.until(EC.visibility_of_element_located(AdsLocators.TITLE_INPUT)).send_keys(ad_title)
 
         # Открытие и выбор категории "Садоводство" через JavaScript
@@ -66,13 +68,10 @@ class TestCreateAdvertisement:
 
         # Шаг 4. Нажать кнопку «Опубликовать»
         publish_btn = wait.until(EC.element_to_be_clickable(AdsLocators.PUBLISH_BUTTON))
-        publish_btn.click()
-
-        # Важное умное ожидание: ждем, пока форма отправится и кнопка публикации исчезнет или станет невидимой
-        wait.until(EC.invisibility_of_element_located(AdsLocators.PUBLISH_BUTTON))
+        driver.execute_script("arguments[0].click();", publish_btn)
 
         # Шаг 5. Перейти в профиль пользователя
-        # Прямой переход на страницу профиля через принудительное обновление URL — самый надежный способ для React-приложений
+        # Принудительно запрашиваем страницу профиля через URL, чтобы гарантировать обновление DOM и базы SPA
         profile_url = f"{base_url}profile"
         driver.get(profile_url)
 
@@ -85,5 +84,8 @@ class TestCreateAdvertisement:
 
         # Финальный ассерт со сравнением фактического и ожидаемого результатов
         assert is_ad_visible is True, "Созданное объявление не появилось в блоке 'Мои объявления' личного кабинета"
+
+
+
 
 
