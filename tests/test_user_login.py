@@ -2,6 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import RegistrationLocators
 from tests.helpers import generate_random_user_credentials
+from tests.urls import TestUrls
 
 
 class TestUserLogin:
@@ -9,8 +10,7 @@ class TestUserLogin:
 
     def test_user_successful_login(self, driver):
         # Тест успешного входа зарегистрированного пользователя
-        base_url = "https://qa-desk.education-services.ru/"
-        driver.get(base_url)
+        driver.get(TestUrls.BASE_URL)
         wait = WebDriverWait(driver, 10)
 
         # Вызываем метод генерации данных напрямую из модуля helpers

@@ -3,14 +3,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import RegistrationLocators
 from tests.helpers import generate_random_user_credentials
+from tests.urls import TestUrls
+
 
 class TestUserRegistration:
     # Тесты лежат в отдельном классе и отдельном тестовом модуле
 
     def test_registration_already_existing_user_shows_errors(self, driver):
         # Тест регистрации уже существующего пользователя.
-        base_url = "https://qa-desk.education-services.ru/"
-        driver.get(base_url)
+        driver.get(TestUrls.BASE_URL)
         wait = WebDriverWait(driver, 10)
 
         # Вызываем метод генерации данных напрямую из модуля helpers

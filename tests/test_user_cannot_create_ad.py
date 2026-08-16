@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import AdsLocators
+from tests.urls import TestUrls
 
 
 class TestCreateAd:
@@ -8,8 +9,7 @@ class TestCreateAd:
 
     def test_unauthorized_user_cannot_create_ad(self, driver):
         #Проверка вызова модального окна авторизации при попытке создать объявление неавторизованным пользователем.
-        base_url = "https://qa-desk.education-services.ru/"
-        driver.get(base_url)
+        driver.get(TestUrls.BASE_URL)
         wait = WebDriverWait(driver, 10)
 
         # Шаг 1. Нажать кнопку «Разместить объявление»

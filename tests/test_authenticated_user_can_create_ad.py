@@ -8,7 +8,7 @@ class TestCreateAdvertisement:
     # Тесты лежат в отдельном классе и отдельном тестовом модуле
 
     def test_authenticated_user_can_create_ad_successfully(self, driver):
-        # Тест успешного создания объявления авторизованным пользователем.
+        # Используем данные заранее созданного статического пользователя
         base_url = "https://qa-desk.education-services.ru/"
         driver.get(base_url)
         wait = WebDriverWait(driver, 10)
