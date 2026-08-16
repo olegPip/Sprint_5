@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import AdsLocators
-
+from tests.helpers import generate_random_user_credentials
 
 class TestCreateAdvertisement:
     # Тесты лежат в отдельном классе и отдельном тестовом модуле
@@ -13,9 +13,10 @@ class TestCreateAdvertisement:
         driver.get(base_url)
         wait = WebDriverWait(driver, 10)
 
-        # Динамическая генерация Email для обеспечения уникальности и автономности теста
-        unique_email = f"user_{int(time.time())}@test.ru"
-        test_password = "Test1234!"
+        # Вызываем метод генерации данных напрямую из модуля helpers
+        user_data = generate_random_user_credentials()
+        unique_email = user_data["email"]
+        password_value = user_data["password"]
 
         ad_title = f"{int(time.time())} Вилы"
         ad_description = "Прочные кованые вилы для работы в саду. Надежная ручка."
@@ -27,8 +28,8 @@ class TestCreateAdvertisement:
 
         # Заполняем форму регистрации
         wait.until(EC.visibility_of_element_located(AdsLocators.EMAIL_INPUT)).send_keys(unique_email)
-        driver.find_element(*AdsLocators.PASSWORD_INPUT).send_keys(test_password)
-        driver.find_element(*AdsLocators.REGISTER_CONFIRM_PASSWORD_INPUT).send_keys(test_password)
+        driver.find_element(*AdsLocators.PASSWORD_INPUT).send_keys(password_value)
+        driver.find_element(*AdsLocators.REGISTER_CONFIRM_PASSWORD_INPUT).send_keys(password_value)
         driver.find_element(*AdsLocators.REGISTER_SUBMIT_BUTTON).click()
 
         # Ожидаем завершения регистрации (пользователь автоматически становится авторизованным)
