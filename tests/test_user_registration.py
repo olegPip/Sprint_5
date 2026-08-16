@@ -2,6 +2,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import RegistrationLocators
+from tests.helpers import generate_random_user_credentials
 
 
 class TestUserRegistration:
@@ -13,7 +14,8 @@ class TestUserRegistration:
         driver.get(base_url)
         wait = WebDriverWait(driver, 10)
 
-        # Email для тестов регистрации генерируется каждый раз новый
+        # Вызываем метод генерации данных напрямую из модуля helpers
+        user_data = generate_random_user_credentials()
         unique_email = f"test_{int(time.time())}@test.ru"
         password_value = "ValidPassword123!"
 

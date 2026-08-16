@@ -5,7 +5,7 @@ from locators import RegistrationLocators
 
 
 class TestUserRegistration:
-    # Требование: Тесты лежат в отдельном классе и отдельном тестовом модуле
+    # Тесты лежат в отдельном классе и отдельном тестовом модуле
 
     def test_registration_already_existing_user_shows_errors(self, driver):
         # Тест регистрации уже существующего пользователя.
