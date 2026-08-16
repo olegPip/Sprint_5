@@ -7,8 +7,7 @@ class TestCreateAd:
     # Тесты лежат в отдельном классе и отдельном тестовом модуле
 
     def test_unauthorized_user_cannot_create_ad(self, driver):
-        # Тест: Проверка вызова модального окна авторизации
-        # при попытке создать объявление неавторизованным пользователем.
+        #Проверка вызова модального окна авторизации при попытке создать объявление неавторизованным пользователем.
         base_url = "https://qa-desk.education-services.ru/"
         driver.get(base_url)
         wait = WebDriverWait(driver, 10)

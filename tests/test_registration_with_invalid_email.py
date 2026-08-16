@@ -2,6 +2,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import RegistrationLocators
+from tests.helpers import generate_random_user_credentials
 
 
 class TestUserRegistration:
@@ -13,10 +14,10 @@ class TestUserRegistration:
         driver.get(base_url)
         wait = WebDriverWait(driver, 10)
 
-        # Email для тестов регистрации генерируется каждый раз новый.
-        # Генерируем некорректный формат (например: invalid_17182103@test.r — не хватает символов в домене)
-        invalid_unique_email = f"invalid_{int(time.monotonic())}@test.r"
-        valid_password = "TestPassword123"
+        # Вызываем метод генерации данных напрямую из модуля helpers
+        user_data = generate_random_user_credentials()
+        invalid_email = f"invalid_{int(time.time())}@test.r"
+        password_value = "TestPassword123"
 
         # Шаг 1. Нажать кнопку «Вход и регистрация»
         wait.until(EC.element_to_be_clickable(RegistrationLocators.LOGIN_REG_BUTTON)).click()
@@ -25,9 +26,9 @@ class TestUserRegistration:
         wait.until(EC.element_to_be_clickable(RegistrationLocators.NO_ACCOUNT_BUTTON)).click()
 
         # Шаг 3. Заполнить поле Email не по маске, а также поля паролей
-        wait.until(EC.visibility_of_element_located(RegistrationLocators.EMAIL_INPUT)).send_keys(invalid_unique_email)
-        driver.find_element(*RegistrationLocators.PASSWORD_INPUT).send_keys(valid_password)
-        driver.find_element(*RegistrationLocators.CONFIRM_PASSWORD_INPUT).send_keys(valid_password)
+        wait.until(EC.visibility_of_element_located(RegistrationLocators.EMAIL_INPUT)).send_keys(invalid_email)
+        driver.find_element(*RegistrationLocators.PASSWORD_INPUT).send_keys(password_value)
+        driver.find_element(*RegistrationLocators.CONFIRM_PASSWORD_INPUT).send_keys(password_value)
 
         # Нажать кнопку «Создать аккаунт»
         driver.find_element(*RegistrationLocators.CREATE_ACCOUNT_BUTTON).click()
