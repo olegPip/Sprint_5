@@ -60,7 +60,7 @@ class TestUserRegistration:
     def test_registration_already_existing_user_shows_errors(self, driver):
         driver.get(TestUrls.BASE_URL)
         wait = WebDriverWait(driver, 10)
-
+        # Тест регистрации с email не по маске *******@*******.***
         invalid_email = f"invalid_{int(time.time())}@test.r"
         password_value = "TestPassword123"
 
