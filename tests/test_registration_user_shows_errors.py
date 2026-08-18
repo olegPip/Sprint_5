@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import RegistrationLocators
-from tests.helpers import generate_random_user_credentials
+from helpers import generate_random_user_credentials
 from tests.urls import TestUrls
 
 
