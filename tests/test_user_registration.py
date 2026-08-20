@@ -57,7 +57,7 @@ class TestUserRegistration:
             f"Неверное имя пользователя. Ожидалось содержание: '{expected_name_part}', "
             f"Фактический текст: '{actual_user_name_text}'")
 
-    def test_registration_already_existing_user_shows_errors(self, driver):
+    def test_registration_with_invalid_email_format_shows_errors(self, driver):
         driver.get(TestUrls.BASE_URL)
         wait = WebDriverWait(driver, 10)
         # Тест регистрации с email не по маске *******@*******.***
