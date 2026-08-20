@@ -1,0 +1,25 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="ignoredPackages">
+        <list>
+          <option value="Faker" />
+          <option value="pytest" />
+          <option value="selenium" />
+          <option value="webdriver-manager" />
+          <option value="allure-pytest" />
+          <option value="sqlalchemy" />
+          <option value="allure-python-commons" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="task_6.key" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
